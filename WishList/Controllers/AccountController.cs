@@ -36,13 +36,8 @@ namespace WishList.Controllers
             { 
                 return View(registerViewModel);
             }
-            ApplicationUser applicationUser = new ApplicationUser();
-            applicationUser.Email = registerViewModel.Email;
-            applicationUser.PasswordHash = registerViewModel.Password;
-            applicationUser.UserName = registerViewModel.Email;
-
-            var result=_userManager.CreateAsync(applicationUser).Result;
-            if (result.Succeeded)
+            var result=_userManager.CreateAsync(new ApplicationUser() { Email=registerViewModel.Email, UserName = registerViewModel.Password },registerViewModel.Password).Result;
+            if (!result.Succeeded)
             {
                 foreach(var item in result.Errors)
                 {
@@ -50,7 +45,7 @@ namespace WishList.Controllers
                 }
                 return View(registerViewModel);
             }
-            return RedirectToAction("HomeController.Index");
+            return RedirectToAction("Index", "Home");
          }
     }
 }
