@@ -39,10 +39,16 @@ namespace WishList.Controllers
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser.Email = registerViewModel.Email;
             applicationUser.PasswordHash = registerViewModel.Password;
-            var result=_userManager.CreateAsync(applicationUser);
-            if (result.Result.Succeeded)
+            applicationUser.UserName = registerViewModel.Email;
+
+            var result=_userManager.CreateAsync(applicationUser).Result;
+            if (result.Succeeded)
             {
-                return View("Register");
+                foreach(var item in result.Errors)
+                {
+                    ModelState.AddModelError("Password", item.Description);
+                }
+                return View(registerViewModel);
             }
             return RedirectToAction("HomeController.Index");
          }
