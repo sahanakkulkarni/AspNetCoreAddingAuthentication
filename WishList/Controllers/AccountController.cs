@@ -34,19 +34,15 @@ namespace WishList.Controllers
         {
             if (!ModelState.IsValid)
             { 
-                return View("Register(registerViewModel)");
+                return View(registerViewModel);
             }
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser.Email = registerViewModel.Email;
             applicationUser.PasswordHash = registerViewModel.Password;
             var result=_userManager.CreateAsync(applicationUser);
-            if (result.Result.Succeeded==false)
+            if (result.Result.Succeeded)
             {
-                foreach (var model in result.Result.Errors)
-                {
-                    ModelState.AddModelError("Password", model.Description);
-                }
-                return View("Register(registerViewModel)");
+                return View("Register");
             }
             return RedirectToAction("HomeController.Index");
          }

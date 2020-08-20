@@ -11,7 +11,8 @@ namespace WishList.Models.AccountViewModels
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required, StringLength(100), MinLength(8), DataType(DataType.Password)]
+        [Required, DataType(DataType.Password)]
+        [StringLength(100,MinimumLength =8)]
         public string Password { get; set; }
 
         [Required, DataType(DataType.Password),Compare("Password",ErrorMessage ="The Password field and Confirm Password doesn't match")]
